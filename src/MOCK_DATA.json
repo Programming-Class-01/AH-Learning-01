@@ -1,85 +1,4 @@
-// import { exit } from "process";
-
-// {
-//     const predictions = {
-//         past: 1,
-//         current: 3,
-//         future: 8
-//     }
-
-//     // let result;
-
-//     // {
-
-//     //     const loadedModifiers = [3, 4, 2, 7, 1, 7, 9]
-//     //     result = loadedModifiers[predictions.current]
-
-//     // }
-
-//     // console.log(`Result: ${result}`);
-// }
-
-// const thisObject = {
-//     mine: [
-//         1, 2, 3, 4
-//     ],
-
-//     yours: [
-//         2, 4, 6, 8
-//     ]
-// }
-
-// const orniArray = [
-//     {
-//         name: `Test`,
-//         age: `12`
-//     },
-//     {
-//         name: "value",
-//         age: "number"
-//     }
-// ]
-// console.log(orniArray[0]?.name);
-
-// if (orniArray[4]?.name !== undefined) {
-//     console.log(orniArray[4].name);
-// }
-
-// const x = 2;
-// if (orniArray.length > x) {
-//     console.log(`Last Value: ${orniArray[x]?.name}`)
-// } else {
-//     console.log("Array out of bounds")
-// }
-
-
-// if (orniArray.length < x) {
-//     console.log("Array out of bounds")
-//     exit();
-// }
-// console.log(`Last Value: ${orniArray[x]?.name}`)
-
-// const predictions = {
-//     past: 1,
-//     current: 3,
-//     future: 8
-// }
-
-
-// function getModifier(inputValue: number): number {
-//     const loadedModifiers = [3, 4, 2, 7, 1, 7, 9]
-//     let result = loadedModifiers[inputValue]
-//     if (result === undefined) { 
-//         console.log("The result was not found in loadedModifiers.")
-//         result = -1;
-//     }
-//     return result;
-
-// }
-
-// console.log(getModifier(1.5));
-
-const accounts = [{"id":1,"first_name":"Leyla","last_name":"Yeowell","credit":6,"balance":954169,"transactions":[{"merchant":"Jast-Ziemann","price":52.3},{"merchant":"Larson Group","price":64.08},{"merchant":"Buckridge-Bednar","price":54.05},{"merchant":"Hodkiewicz and Sons","price":38.62},{"merchant":"Legros-Hagenes","price":86.62},{"merchant":"Schmeler LLC","price":6.74},{"merchant":"Von-Kovacek","price":44.76},{"merchant":"Quigley Group","price":7.61},{"merchant":"Herman, Ferry and Corkery","price":95.54},{"merchant":"Hayes, Corwin and Paucek","price":97.88},{"merchant":"Hickle Inc","price":83.95},{"merchant":"Lang-Stokes","price":81.49}]},
+[{"id":1,"first_name":"Leyla","last_name":"Yeowell","credit":6,"balance":954169,"transactions":[{"merchant":"Jast-Ziemann","price":52.3},{"merchant":"Larson Group","price":64.08},{"merchant":"Buckridge-Bednar","price":54.05},{"merchant":"Hodkiewicz and Sons","price":38.62},{"merchant":"Legros-Hagenes","price":86.62},{"merchant":"Schmeler LLC","price":6.74},{"merchant":"Von-Kovacek","price":44.76},{"merchant":"Quigley Group","price":7.61},{"merchant":"Herman, Ferry and Corkery","price":95.54},{"merchant":"Hayes, Corwin and Paucek","price":97.88},{"merchant":"Hickle Inc","price":83.95},{"merchant":"Lang-Stokes","price":81.49}]},
 {"id":2,"first_name":"Theresita","last_name":"Borgnol","credit":3,"balance":776991,"transactions":[{"merchant":"Daniel, Kautzer and Howe","price":47.89},{"merchant":"Toy, Christiansen and Cremin","price":19.44},{"merchant":"Green Inc","price":32.3},{"merchant":"Dietrich, Feeney and Hills","price":29.72},{"merchant":"Collier-Ondricka","price":33.46},{"merchant":"Donnelly, Graham and Shields","price":45.41},{"merchant":"O'Conner and Sons","price":38.81},{"merchant":"Spencer Inc","price":89.44},{"merchant":"Larkin-Strosin","price":9.34},{"merchant":"Doyle and Sons","price":21.0},{"merchant":"Swift and Sons","price":80.26},{"merchant":"Kerluke, Block and Lemke","price":7.42},{"merchant":"Wilkinson-Kertzmann","price":28.22}]},
 {"id":3,"first_name":"Verney","last_name":"Coke","credit":10,"balance":391611,"transactions":[{"merchant":"Kuphal LLC","price":32.13},{"merchant":"McDermott Inc","price":12.83},{"merchant":"D'Amore-Keebler","price":92.54},{"merchant":"Howell Inc","price":31.45},{"merchant":"Dietrich, Lakin and Breitenberg","price":68.52},{"merchant":"Daugherty-Bashirian","price":19.89},{"merchant":"Runolfsdottir and Sons","price":63.48},{"merchant":"Langworth, Greenfelder and Ankunding","price":66.84},{"merchant":"Ledner, Gerhold and Murray","price":47.58},{"merchant":"Deckow-Schneider","price":54.74},{"merchant":"Herzog, O'Kon and Brekke","price":11.29},{"merchant":"Collier Inc","price":97.29}]},
 {"id":4,"first_name":"Britta","last_name":"Terzi","credit":8,"balance":306445,"transactions":[{"merchant":"Gerlach, Brown and Stamm","price":28.9},{"merchant":"Reichel, Walter and Heller","price":98.67},{"merchant":"Brekke, Windler and Moen","price":22.64},{"merchant":"Stracke, Hamill and Terry","price":38.66},{"merchant":"Larkin Group","price":87.65},{"merchant":"Gutmann-Sanford","price":95.95},{"merchant":"Corkery, Volkman and Dickens","price":13.08},{"merchant":"Lehner, Schinner and Deckow","price":49.25},{"merchant":"Lang-Goyette","price":11.68}]},
@@ -283,7 +202,7 @@ const accounts = [{"id":1,"first_name":"Leyla","last_name":"Yeowell","credit":6,
 {"id":202,"first_name":"Jolynn","last_name":"Oscroft","credit":3,"balance":527556,"transactions":[{"merchant":"Jaskolski Inc","price":67.2},{"merchant":"Emmerich LLC","price":42.18},{"merchant":"Fritsch Group","price":69.67},{"merchant":"Denesik-Dibbert","price":87.5},{"merchant":"Krajcik LLC","price":72.61},{"merchant":"Barrows and Sons","price":27.69}]},
 {"id":203,"first_name":"Vincenty","last_name":"Marchington","credit":2,"balance":326998,"transactions":[{"merchant":"Fisher LLC","price":15.55},{"merchant":"Hoppe, Lueilwitz and White","price":62.04},{"merchant":"Bernier, Goodwin and Ruecker","price":21.05},{"merchant":"Herzog LLC","price":46.16},{"merchant":"Hamill, Swaniawski and Koch","price":72.57},{"merchant":"Hyatt, Murazik and Green","price":18.23},{"merchant":"Marks-Padberg","price":87.83},{"merchant":"Skiles and Sons","price":64.2},{"merchant":"Morar LLC","price":16.82},{"merchant":"Hartmann, Hegmann and Abernathy","price":50.55}]},
 {"id":204,"first_name":"Barb","last_name":"Swayne","credit":2,"balance":644072,"transactions":[{"merchant":"Ward-Nikolaus","price":40.62},{"merchant":"Rowe-Denesik","price":90.51},{"merchant":"Flatley, Harris and Lowe","price":62.65},{"merchant":"Gleason, Gutkowski and Senger","price":96.54},{"merchant":"Schroeder-Zieme","price":36.52},{"merchant":"Anderson, Yost and Lindgren","price":69.95},{"merchant":"Runolfsson Inc","price":3.8}]},
-{"id":205,"first_name":"Delphine","larvaluest_name":"Lorincz","credit":4,"balance":39242,"transactions":[{"merchant":"Zemlak, Marvin and Littel","price":15.11},{"merchant":"Kutch-Smitham","price":38.87},{"merchant":"Crooks-McKenzie","price":64.89},{"merchant":"Rice-Padberg","price":38.66},{"merchant":"Wuckert LLC","price":52.53},{"merchant":"Schaden and Sons","price":55.39},{"merchant":"Barrows, Goodwin and Stiedemann","price":41.18},{"merchant":"Boehm, Pfannerstill and Leuschke","price":17.28},{"merchant":"Lowe, Thiel and Torp","price":51.94},{"merchant":"Graham, Ferry and Rodriguez","price":69.48}]},
+{"id":205,"first_name":"Delphine","last_name":"Lorincz","credit":4,"balance":39242,"transactions":[{"merchant":"Zemlak, Marvin and Littel","price":15.11},{"merchant":"Kutch-Smitham","price":38.87},{"merchant":"Crooks-McKenzie","price":64.89},{"merchant":"Rice-Padberg","price":38.66},{"merchant":"Wuckert LLC","price":52.53},{"merchant":"Schaden and Sons","price":55.39},{"merchant":"Barrows, Goodwin and Stiedemann","price":41.18},{"merchant":"Boehm, Pfannerstill and Leuschke","price":17.28},{"merchant":"Lowe, Thiel and Torp","price":51.94},{"merchant":"Graham, Ferry and Rodriguez","price":69.48}]},
 {"id":206,"first_name":"Donielle","last_name":"Gladtbach","credit":2,"balance":177966,"transactions":[{"merchant":"Metz Group","price":58.5},{"merchant":"Rolfson Inc","price":52.39},{"merchant":"Ullrich-Waters","price":66.43},{"merchant":"Schumm-Lesch","price":83.13}]},
 {"id":207,"first_name":"Burty","last_name":"Astell","credit":4,"balance":129146,"transactions":[{"merchant":"Gibson and Sons","price":6.26},{"merchant":"Daugherty, Little and Dickinson","price":73.81},{"merchant":"Hamill, Batz and Rippin","price":45.23},{"merchant":"Wisozk-Weber","price":31.09},{"merchant":"Turcotte-Bechtelar","price":53.24},{"merchant":"Aufderhar, Herzog and Lowe","price":18.34},{"merchant":"Shields and Sons","price":52.19},{"merchant":"Jakubowski-Beier","price":63.19},{"merchant":"Jakubowski-Franecki","price":6.08},{"merchant":"Jacobson, Schuster and Johnston","price":37.57},{"merchant":"McGlynn Group","price":54.96},{"merchant":"Macejkovic LLC","price":55.46}]},
 {"id":208,"first_name":"Robinet","last_name":"McAlister","credit":9,"balance":49096,"transactions":[{"merchant":"Gleichner-Greenfelder","price":69.15},{"merchant":"Ratke, Wyman and Bernier","price":81.71},{"merchant":"Towne Inc","price":63.43},{"merchant":"Konopelski, Johnson and Will","price":38.95}]},
@@ -330,7 +249,7 @@ const accounts = [{"id":1,"first_name":"Leyla","last_name":"Yeowell","credit":6,
 {"id":249,"first_name":"Sheri","last_name":"Esel","credit":7,"balance":582637,"transactions":[{"merchant":"McLaughlin, Fritsch and Daugherty","price":15.38},{"merchant":"Quitzon, Mante and Brown","price":63.04},{"merchant":"Schumm, Rippin and Klein","price":27.82},{"merchant":"Wilkinson-Kulas","price":44.86}]},
 {"id":250,"first_name":"Alena","last_name":"Fowles","credit":9,"balance":461228,"transactions":[{"merchant":"Fahey, Stamm and Nikolaus","price":8.07}]},
 {"id":251,"first_name":"Balduin","last_name":"Jent","credit":1,"balance":407513,"transactions":[{"merchant":"Wolff-Mertz","price":34.44},{"merchant":"Frami, Ritchie and Mante","price":76.55}]},
-{"id":252,"first_name":"Shanie","lastrvalue_name":"Hawtrey","credit":1,"balance":702596,"transactions":[{"merchant":"Hirthe-Spinka","price":64.12},{"merchant":"Rempel-Braun","price":96.04},{"merchant":"Wiza Inc","price":21.99},{"merchant":"Blanda-Klein","price":73.41},{"merchant":"Wintheiser, Larkin and Becker","price":96.54},{"merchant":"Lynch and Sons","price":26.28},{"merchant":"Graham-Parisian","price":12.43},{"merchant":"Schneider and Sons","price":98.61},{"merchant":"Turcotte-Jacobson","price":17.05},{"merchant":"Mraz-Raynor","price":4.73},{"merchant":"Heaney, Mraz and Barrows","price":41.79},{"merchant":"Nitzsche-Walsh","price":58.53},{"merchant":"Gislason Group","price":70.56},{"merchant":"Hegmann Inc","price":40.73}]},
+{"id":252,"first_name":"Shanie","last_name":"Hawtrey","credit":1,"balance":702596,"transactions":[{"merchant":"Hirthe-Spinka","price":64.12},{"merchant":"Rempel-Braun","price":96.04},{"merchant":"Wiza Inc","price":21.99},{"merchant":"Blanda-Klein","price":73.41},{"merchant":"Wintheiser, Larkin and Becker","price":96.54},{"merchant":"Lynch and Sons","price":26.28},{"merchant":"Graham-Parisian","price":12.43},{"merchant":"Schneider and Sons","price":98.61},{"merchant":"Turcotte-Jacobson","price":17.05},{"merchant":"Mraz-Raynor","price":4.73},{"merchant":"Heaney, Mraz and Barrows","price":41.79},{"merchant":"Nitzsche-Walsh","price":58.53},{"merchant":"Gislason Group","price":70.56},{"merchant":"Hegmann Inc","price":40.73}]},
 {"id":253,"first_name":"Rutter","last_name":"Horder","credit":9,"balance":91627,"transactions":[{"merchant":"Pfeffer, Fahey and Cormier","price":75.69},{"merchant":"Gibson, Halvorson and Heller","price":17.04}]},
 {"id":254,"first_name":"Gayel","last_name":"Molesworth","credit":4,"balance":785476,"transactions":[{"merchant":"Zulauf Inc","price":25.97}]},
 {"id":255,"first_name":"Gabie","last_name":"Cicetti","credit":8,"balance":717575,"transactions":[{"merchant":"Treutel-Williamson","price":80.94},{"merchant":"Lindgren, Beier and Johns","price":2.83},{"merchant":"Miller and Sons","price":31.23},{"merchant":"Jerde, Streich and Smitham","price":36.97},{"merchant":"Treutel-Pfannerstill","price":3.22},{"merchant":"Corkery, Blick and Trantow","price":34.38},{"merchant":"Dibbert LLC","price":90.1},{"merchant":"Osinski, Schmitt and Altenwerth","price":14.98},{"merchant":"Walker-Heaney","price":86.79},{"merchant":"Lindgren-Lockman","price":66.23},{"merchant":"Anderson Group","price":78.76},{"merchant":"Ullrich, Weissnat and Medhurst","price":47.27},{"merchant":"Brekke, Lubowitz and Bradtke","price":36.18},{"merchant":"Anderson-Pagac","price":91.2}]},
@@ -679,57 +598,3 @@ const accounts = [{"id":1,"first_name":"Leyla","last_name":"Yeowell","credit":6,
 {"id":598,"first_name":"Liv","last_name":"Crace","credit":10,"balance":908645,"transactions":[{"merchant":"Wilderman and Sons","price":48.93},{"merchant":"Haley, Murray and Bergstrom","price":77.76},{"merchant":"Dicki-Yundt","price":96.69},{"merchant":"Rice, Renner and Lesch","price":26.18},{"merchant":"Bernier Group","price":55.68},{"merchant":"Monahan, Hermann and Torphy","price":30.86},{"merchant":"Langworth-Schowalter","price":44.02},{"merchant":"Bechtelar, Zemlak and MacGyver","price":14.56},{"merchant":"Daugherty, Lindgren and Cassin","price":44.63},{"merchant":"Grady Group","price":51.22},{"merchant":"Bergnaum-Little","price":61.9},{"merchant":"Hoppe LLC","price":73.44}]},
 {"id":599,"first_name":"Thoma","last_name":"Davenport","credit":6,"balance":434103,"transactions":[{"merchant":"Stehr-O'Hara","price":19.93},{"merchant":"Kuphal LLC","price":69.8}]},
 {"id":600,"first_name":"Stavros","last_name":"Barrass","credit":6,"balance":565552,"transactions":[{"merchant":"Johnson LLC","price":36.13},{"merchant":"Robel, Hackett and Kerluke","price":42.95},{"merchant":"Muller, Ziemann and Bergstrom","price":27.38},{"merchant":"Nader-Towne","price":85.47},{"merchant":"Hilpert, Moen and Dietrich","price":50.78},{"merchant":"Franecki, Cartwright and Murphy","price":84.61}]}]
-
-// {"id":6,"first_name":"Addy","last_name":"Wrassell","credit":7,"balance":720082,"transactions":[{"merchant":"Jacobi LLC","price":89.24}]},
-
-// function getBalance(index: number): number {
-//     return accounts[index].balance
-//    const account = accounts[index];
-//    const balance = account?.balance;
-//    return balance;
-// }
-
-// getBalance(5);
-
-// console.log(`The Balance is: ${accounts[5]?.balance}`);
-// console.log(`Addy's only transaction was for: ${accounts[5]?.transactions[0]?.price}`)
-// const lastIndex = accounts[598]?.transactions.length
-// //@ts-ignore
-// console.log(`Thoma Davenport's last transaction was for: ${accounts[598]?.transactions[lastIndex - 1]?.price}`)
-
-// {"id":23,"first_name":"Shermy","last_name":"McEnhill","credit":8,"balance":632686,"transactions":[{"merchant":"Von-Heathcote","price":86.31},{"merchant":"Klein-Ankunding","price":98.85},{"merchant":"Labadie, Bosco and Armstrong","price":5.69},{"merchant":"McClure-Lynch","price":56.47},{"merchant":"Murphy-Rolfson","price":97.63},{"merchant":"Marquardt and Sons","price":18.12},{"merchant":"Sawayn, Quitzon and Goodwin","price":95.42},{"merchant":"Hessel Inc","price":85.24},{"merchant":"Goldner LLC","price":77.49},{"merchant":"Predovic-Ziemann","price":5.19}]},
-
-// console.log(`The transaction is: ${accounts[22]?.transactions[7]?.price}`);
-
-
-// Write a function that takes the ID of an account and returns the available credit line of that person.
-// Assume that IDs are inconsistent in ordering, but are unique.
-// The available credit line is 10% per level of credit, as a percentage of their balance.
-// Assure the function has no side-effects.
-
-// Functions, Parameters, Branching, and Loops
-
-function creditLine(accountsArray: any[], accountId: number): number{
-    const creditLevel = account?.credit //incorrect syntax, correct once it's figured out.
-    
-    const accountBalance = account?.balance //incorrect syntax, correct once it's figured out.
-    
-    const availableCredit =  accountBalance * (0.10 * creditLevel)
-    
-    return availableCredit
-}
-
-// Change value here to change account looked up
-creditLine(accounts, 37)
-
-// Step 1: Get the ID from Const Accounts. Incorrect. Give the function a parameter for the account ID.
-// Step 2: Fix what needs to be figured out
-
-
-
-// FIXME: Gavin's favorite tag.
-// BLAME: Amber's favorite tag.
-// HACK: Chris' favorite tag.
-// BLAME: It's still `'s` for singular proper nouns ending in s. `Chris's`.
-// HACK: ENGLISH.
-// BLAME: French.
