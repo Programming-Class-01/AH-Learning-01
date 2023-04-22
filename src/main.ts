@@ -870,7 +870,7 @@ function getPlayerInventoryItems(inputItems: IInventory[]): string[] {
     for (const item of inputItems) {
         if (item.location == locations.OnPerson || item.location == locations.InBackpack ||
             item.location == locations.Worn || item.location == locations.InLBV) {
-            output.push(item.name);
+            output.push(item.name); // add value onto the end of the array
         }
     }
 
@@ -883,6 +883,30 @@ console.log(getPlayerInventoryItems(items));
 // Discussion on array.shift and why it's potentially hazardous
 console.log(items);
 
+// More expensive than push/pop
 items.shift();
 
 console.log(items);
+
+// Your assignment this week is a new function on the mock_data.json we provided previously. 
+// Please generate a side-effect free function that computes and returns the average number of transactions among all customers in the object. 
+// The only input to the function should be the mock_data object itself.
+function averageTransactions(accounts: IAccount[]): number | Error {
+    // can declare multiple variables like this
+    let accountTotal = 0, transactionTotal = 0;
+    // for (const account of accounts) {
+    for (let i = accounts.length - 1; i >= 0; i--) { // doing it backwards because why not
+        const account = accounts[i];
+        if (account === undefined) continue;
+        // accountTotal = accountTotal +1;
+        accountTotal++;
+        if (account.transactions === undefined) continue;
+        // transactionTotal = transactionTotal + account.transactions.length;
+        transactionTotal += account.transactions.length;
+    }
+    if (accountTotal === 0) return new Error("Accounts array has no valid accounts");
+
+    return transactionTotal / accountTotal;
+}
+
+console.log(averageTransactions(accounts));
