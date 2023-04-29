@@ -1,4 +1,17 @@
-[{"id":1,"first_name":"Leyla","last_name":"Yeowell","credit":6,"balance":954169,"transactions":[{"merchant":"Jast-Ziemann","price":52.3},{"merchant":"Larson Group","price":64.08},{"merchant":"Buckridge-Bednar","price":54.05},{"merchant":"Hodkiewicz and Sons","price":38.62},{"merchant":"Legros-Hagenes","price":86.62},{"merchant":"Schmeler LLC","price":6.74},{"merchant":"Von-Kovacek","price":44.76},{"merchant":"Quigley Group","price":7.61},{"merchant":"Herman, Ferry and Corkery","price":95.54},{"merchant":"Hayes, Corwin and Paucek","price":97.88},{"merchant":"Hickle Inc","price":83.95},{"merchant":"Lang-Stokes","price":81.49}]},
+interface IAccount {
+    id: number;
+    first_name: string;
+    last_name: string;
+    credit: number;
+    balance: number;
+    transactions: {
+        merchant: string;
+        price: number;
+    }[];
+
+}
+
+const accounts : IAccount[] = [{"id":1,"first_name":"Leyla","last_name":"Yeowell","credit":6,"balance":954169,"transactions":[{"merchant":"Jast-Ziemann","price":52.3},{"merchant":"Larson Group","price":64.08},{"merchant":"Buckridge-Bednar","price":54.05},{"merchant":"Hodkiewicz and Sons","price":38.62},{"merchant":"Legros-Hagenes","price":86.62},{"merchant":"Schmeler LLC","price":6.74},{"merchant":"Von-Kovacek","price":44.76},{"merchant":"Quigley Group","price":7.61},{"merchant":"Herman, Ferry and Corkery","price":95.54},{"merchant":"Hayes, Corwin and Paucek","price":97.88},{"merchant":"Hickle Inc","price":83.95},{"merchant":"Lang-Stokes","price":81.49}]},
 {"id":2,"first_name":"Theresita","last_name":"Borgnol","credit":3,"balance":776991,"transactions":[{"merchant":"Daniel, Kautzer and Howe","price":47.89},{"merchant":"Toy, Christiansen and Cremin","price":19.44},{"merchant":"Green Inc","price":32.3},{"merchant":"Dietrich, Feeney and Hills","price":29.72},{"merchant":"Collier-Ondricka","price":33.46},{"merchant":"Donnelly, Graham and Shields","price":45.41},{"merchant":"O'Conner and Sons","price":38.81},{"merchant":"Spencer Inc","price":89.44},{"merchant":"Larkin-Strosin","price":9.34},{"merchant":"Doyle and Sons","price":21.0},{"merchant":"Swift and Sons","price":80.26},{"merchant":"Kerluke, Block and Lemke","price":7.42},{"merchant":"Wilkinson-Kertzmann","price":28.22}]},
 {"id":3,"first_name":"Verney","last_name":"Coke","credit":10,"balance":391611,"transactions":[{"merchant":"Kuphal LLC","price":32.13},{"merchant":"McDermott Inc","price":12.83},{"merchant":"D'Amore-Keebler","price":92.54},{"merchant":"Howell Inc","price":31.45},{"merchant":"Dietrich, Lakin and Breitenberg","price":68.52},{"merchant":"Daugherty-Bashirian","price":19.89},{"merchant":"Runolfsdottir and Sons","price":63.48},{"merchant":"Langworth, Greenfelder and Ankunding","price":66.84},{"merchant":"Ledner, Gerhold and Murray","price":47.58},{"merchant":"Deckow-Schneider","price":54.74},{"merchant":"Herzog, O'Kon and Brekke","price":11.29},{"merchant":"Collier Inc","price":97.29}]},
 {"id":4,"first_name":"Britta","last_name":"Terzi","credit":8,"balance":306445,"transactions":[{"merchant":"Gerlach, Brown and Stamm","price":28.9},{"merchant":"Reichel, Walter and Heller","price":98.67},{"merchant":"Brekke, Windler and Moen","price":22.64},{"merchant":"Stracke, Hamill and Terry","price":38.66},{"merchant":"Larkin Group","price":87.65},{"merchant":"Gutmann-Sanford","price":95.95},{"merchant":"Corkery, Volkman and Dickens","price":13.08},{"merchant":"Lehner, Schinner and Deckow","price":49.25},{"merchant":"Lang-Goyette","price":11.68}]},
@@ -598,3 +611,5 @@
 {"id":598,"first_name":"Liv","last_name":"Crace","credit":10,"balance":908645,"transactions":[{"merchant":"Wilderman and Sons","price":48.93},{"merchant":"Haley, Murray and Bergstrom","price":77.76},{"merchant":"Dicki-Yundt","price":96.69},{"merchant":"Rice, Renner and Lesch","price":26.18},{"merchant":"Bernier Group","price":55.68},{"merchant":"Monahan, Hermann and Torphy","price":30.86},{"merchant":"Langworth-Schowalter","price":44.02},{"merchant":"Bechtelar, Zemlak and MacGyver","price":14.56},{"merchant":"Daugherty, Lindgren and Cassin","price":44.63},{"merchant":"Grady Group","price":51.22},{"merchant":"Bergnaum-Little","price":61.9},{"merchant":"Hoppe LLC","price":73.44}]},
 {"id":599,"first_name":"Thoma","last_name":"Davenport","credit":6,"balance":434103,"transactions":[{"merchant":"Stehr-O'Hara","price":19.93},{"merchant":"Kuphal LLC","price":69.8}]},
 {"id":600,"first_name":"Stavros","last_name":"Barrass","credit":6,"balance":565552,"transactions":[{"merchant":"Johnson LLC","price":36.13},{"merchant":"Robel, Hackett and Kerluke","price":42.95},{"merchant":"Muller, Ziemann and Bergstrom","price":27.38},{"merchant":"Nader-Towne","price":85.47},{"merchant":"Hilpert, Moen and Dietrich","price":50.78},{"merchant":"Franecki, Cartwright and Murphy","price":84.61}]}]
+
+export { IAccount, accounts };
