@@ -910,3 +910,86 @@ function averageTransactions(accounts: IAccount[]): number | Error {
 }
 
 console.log(averageTransactions(accounts));
+
+/* Print a pay stub for any given name or ID, that looks like the following:
+
+==========
+Pay Stub for ${name}
+==========
+You worked ${hours}.
+<You worked ${hours} overtime. | You have no overtime.>
+Your pay is ${Pay}.
+==========
+
+People who work more than 40 hours earn 1.5 times overtime.
+People who are salaried are paid for 40 hours no matter how much they work.
+Ensure you have no side effects.
+All IDs are correlated. Do not assume similar array positions.*/
+import { IPayrate, payrates } from "./payrate";
+import { IPaytype, paytypes } from "./paytype";
+import { IPerson, people } from "./person";
+import { ITimesheet, timesheets } from "./timesheet";
+
+interface IPayData {
+    firstName: string;
+    lastName: string;
+    paidHours: number;
+    overtimeHours: number;
+    totalPay: number;
+}
+function generatePayData(id: string, payrates: IPayrate[], paytypes: IPaytype[], people: IPerson[], timesheets: ITimesheet[]): IPayData | Error {
+    const HOURS_PER_WEEK = 40, OVERTIME_RATE = 1.5;
+
+    // let IDPayrate : string;
+    // for(const payrate of payrates) {
+    //     if( payrate.id == id ) {
+    //         IDPayrate = payrate.payrate;
+    //     }
+    // }
+    const payrate = payrates[payrates.map(e => e.id).indexOf(id)];
+    const paytype = paytypes[paytypes.map(e => e.id).indexOf(id)];
+    const person = people[people.map(e => e.id).indexOf(id)];
+    const timesheet = timesheets[timesheets.map(e => e.id).indexOf(id)];
+
+    // Check if our id 
+    if (payrate == undefined || paytype == undefined || person == undefined || timesheet == undefined) return new Error(`id not found: ${id}`);
+
+    // let paidhours = 0;
+    // for( const hours of timesheet.timesheet) {
+    //     paidHours += hours;
+    // }
+    const paidHours = timesheet.timesheet.map(e => e.hours).reduce((a: number, b: number) => a + b);
+    // let overtimeHours = 0;
+    // if( paytype.paytype = "hourly" && paidHours > 40) overtimeHours = paidHours - HOURS_PER_WEEK
+    const overtimeHours = paytype.paytype == "salary" ? 0 : Math.max(0, paidHours - HOURS_PER_WEEK);
+    const wage = parseFloat(payrate.payrate.slice(1));
+    // There are so many ways to do this calculation. Here's mine; if yours is readable and gets the right result, feel good about it.
+    const totalPay = wage * Math.max(HOURS_PER_WEEK, paidHours) + OVERTIME_RATE * wage * overtimeHours;
+
+    return {
+        firstName: person.first_name,
+        lastName: person.last_name,
+        paidHours: paidHours,
+        overtimeHours: overtimeHours,
+        totalPay: totalPay,
+    }
+}
+
+function generatePayStub(payData: IPayData) : string {
+    return `
+==========
+Pay Stub for ${payData.firstName} ${payData.lastName}
+==========
+You worked ${payData.paidHours} hours.
+${payData.overtimeHours > 0 ? `You worked ${payData.overtimeHours} overtime.` : `You have no overtime.`}
+Your pay is $${payData.totalPay.toFixed(2)}.
+==========`
+}
+
+const id = "e9cb30e4-6dbe-479d-8e27-c90af323fdf9";
+const payData = generatePayData(id, payrates, paytypes, people, timesheets);
+if (payData instanceof Error) {
+    console.log(payData);
+} else {
+    console.log(generatePayStub(payData));
+}
