@@ -330,7 +330,10 @@ interface IPayData {
     overtimeHours: number;
     totalPay: number;
 }
-function generatePayData(id: string, payrates: IPayrate[], paytypes: IPaytype[], people: IPerson[], timesheets: ITimesheet[]): IPayData | Error {
+
+import { Ok, Err, Result } from "ts-results";
+
+function generatePayData(id: string, payrates: IPayrate[], paytypes: IPaytype[], people: IPerson[], timesheets: ITimesheet[]): Result<IPayData, Error> {
     const HOURS_PER_WEEK = 40, OVERTIME_RATE = 1.5;
 
     // let IDPayrate : string;
@@ -344,8 +347,15 @@ function generatePayData(id: string, payrates: IPayrate[], paytypes: IPaytype[],
     const person = people[people.map(e => e.id).indexOf(id)];
     const timesheet = timesheets[timesheets.map(e => e.id).indexOf(id)];
 
-    // Check if our id is present and return an error if it's not found
-    if (payrate == undefined || paytype == undefined || person == undefined || timesheet == undefined) return new Error(`id not found: ${id}`);
+    // Check if our id is present in each dataset and construct an error to return
+    if (!payrate || !paytype || !person || !timesheet) {
+        const problems: string[] = [];
+        if (!payrate) problems.push("payrates");
+        if (!paytype) problems.push("paytypes");
+        if (!person) problems.push("people");
+        if (!timesheet) problems.push("timesheets");
+        return Err(new Error(`ID (${id}) not found in ${problems}`));
+    }
 
     // let paidhours = 0;
     // for( const hours of timesheet.timesheet) {
@@ -359,16 +369,17 @@ function generatePayData(id: string, payrates: IPayrate[], paytypes: IPaytype[],
     // There are so many ways to do this calculation. Here's mine; if yours is readable and gets the right result, feel good about it.
     const totalPay = wage * Math.max(HOURS_PER_WEEK, paidHours) + OVERTIME_RATE * wage * overtimeHours;
 
-    return {
+    const result = {
         firstName: person.first_name,
         lastName: person.last_name,
         paidHours: paidHours,
         overtimeHours: overtimeHours,
         totalPay: totalPay,
     }
+    return Ok(result);
 }
 
-function generatePayStub(payData: IPayData) : string {
+function generatePayStub(payData: IPayData): string {
     return `
 ==========
 Pay Stub for ${payData.firstName} ${payData.lastName}
@@ -379,10 +390,10 @@ Your pay is $${payData.totalPay.toFixed(2)}.
 ==========`
 }
 
-const id = "e9cb30e4-6dbe-479d-8e27-c90af323fdf9";
-const payData = generatePayData(id, payrates, paytypes, people, timesheets);
-if (payData instanceof Error) {
-    console.log(payData);
+const id = "139389fe-d0bb-4590-8392-427583c99f57";
+const result = generatePayData(id, payrates, paytypes, people, timesheets);
+if (result.err) {
+    console.log(result.val);
 } else {
-    console.log(generatePayStub(payData));
+    console.log(generatePayStub(result.val));
 }
