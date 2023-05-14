@@ -419,8 +419,8 @@ interface IWorklog {
 function generateWorklogsBySorting(people: IPerson[], timesheets: ITimesheet[]): Result<IWorklog, String>[] {
     // By sorting the arrays first, we can make sure we 
     // encounter all the matching IDs at the same time.
-    people.sort((a: IPerson, b: IPerson) => a.id.localeCompare(b.id));
-    timesheets.sort((a: ITimesheet, b: ITimesheet) => a.id.localeCompare(b.id));
+    people.sort((a: IPerson, b: IPerson) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
+    timesheets.sort((a: ITimesheet, b: ITimesheet) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
 
     // Now we can loop through the arrays and throw them into our array
     let result = [];
@@ -454,18 +454,21 @@ function generateWorklogsBySorting(people: IPerson[], timesheets: ITimesheet[]):
             continue;
         }
 
-        const fullName = `${person.first_name} ${person.last_name}`;
-        const totalHours = timesheet.timesheet.map(e => e.hours).reduce((a: number, b: number) => a + b);
+        // Check for missing entries by comparison
         if (person.id < timesheet.id) {
             // Again, no valid hours to record. Report the error.
+            const fullName = `${person.first_name} ${person.last_name}`;
             result.push(Err(`No hours found for ${fullName} (${person.id}).`));
             p++;
         } else if (person.id > timesheet.id) {
             // Again, no valid name to assign the time to. Record the hours by ID.
+            const totalHours = timesheet.timesheet.map(e => e.hours).reduce((a: number, b: number) => a + b);
             result.push(Ok({ fullName: `Name Not Found (${timesheet.id}).`, totalHours: totalHours }));
             t++;
         } else { // if (person.id == timesheet.id)
             // Finally valid data
+            const fullName = `${person.first_name} ${person.last_name}`;
+            const totalHours = timesheet.timesheet.map(e => e.hours).reduce((a: number, b: number) => a + b);
             result.push(Ok({ fullName: fullName, totalHours: totalHours }));
             p++;
             t++;
