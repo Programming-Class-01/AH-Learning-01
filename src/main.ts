@@ -411,12 +411,12 @@ if (result.err) {
 // import { ITimesheet, timesheets } from "./timesheet";
 // import { Ok, Err, Result } from "ts-results";
 
-interface IEmployeeLog {
+interface IWorklog {
     fullName?: string;
     totalHours?: number;
 }
 
-function generateWorklogBySorting(people: IPerson[], timesheets: ITimesheet[]): Result<IEmployeeLog, String>[] {
+function generateWorklogsBySorting(people: IPerson[], timesheets: ITimesheet[]): Result<IWorklog, String>[] {
     // By sorting the arrays first, we can make sure we 
     // encounter all the matching IDs at the same time.
     people.sort((a: IPerson, b: IPerson) => a.id.localeCompare(b.id));
@@ -425,59 +425,50 @@ function generateWorklogBySorting(people: IPerson[], timesheets: ITimesheet[]): 
     // Now we can loop through the arrays and throw them into our array
     let result = [];
     for (let p = 0, t = 0; p < people.length || t < timesheets.length; /* manual incrementing */) {
-        // We'll be using these a lot, so let's save them for later reference
+        // We'll be using these a lot, so let's save them for later reference.
         const person = people[p];
         const timesheet = timesheets[t];
 
-        // Let's check our error cases
-        if (!person && !timesheet) {
-            // Everything is terrible. Report it and move on.
-            result.push(Err(`No valid data at p=${p} and t=${t}.`))
+        // Check if we've run off either of our arrays
+        if (p >= people.length) {
+            // We've run out of name data. Record the remaining worklogs by ID.
+            for (const timesheet of timesheets.slice(t)) {
+                const hours = timesheet.timesheet.map(e => e.hours).reduce((a: number, b: number) => a + b);
+                result.push(Ok({ fullName: `Name Not Found (${timesheet.id}).`, totalHours: hours }));
+            }
+            return result;
+        }
+        if (t >= timesheets.length) {
+            // We've run out of time data. Report the remaining employees without worklogs.
+            for (const person of people.slice(p)) {
+                const fullName = `${person.first_name} ${person.last_name}`;
+                result.push(Err(`No hours found for ${fullName} (${person.id}).`));
+            }
+            return result;
+        }
+
+        // Move past any empty fields, pairwise if necessary.
+        if (!person || !timesheet) {
+            if (!person) p++;
+            if (!timesheet) t++;
+            continue;
+        }
+
+        const fullName = `${person.first_name} ${person.last_name}`;
+        const totalHours = timesheet.timesheet.map(e => e.hours).reduce((a: number, b: number) => a + b);
+        if (person.id < timesheet.id) {
+            // Again, no valid hours to record. Report the error.
+            result.push(Err(`No hours found for ${fullName} (${person.id}).`));
+            p++;
+        } else if (person.id > timesheet.id) {
+            // Again, no valid name to assign the time to. Record the hours by ID.
+            result.push(Ok({ fullName: `Name Not Found (${timesheet.id}).`, totalHours: totalHours }));
+            t++;
+        } else { // if (person.id == timesheet.id)
+            // Finally valid data
+            result.push(Ok({ fullName: fullName, totalHours: totalHours }));
             p++;
             t++;
-            continue;
-        } else if (person && !timesheet) {
-            if (t < timesheets.length) {
-                // No worklog data here, so increment timesheets and continue looking.
-                t++;
-                continue;
-            } else {
-                // We have no more timesheets left for this person. Report.
-                const fullName = `${person?.first_name} ${person?.last_name}`;
-                result.push(Err(`No hours found for ${fullName} (${person.id}).`));
-                p++;
-                continue;
-            }
-        } else if (!person && timesheet) {
-            if (p < people.length) {
-                // No name data here, so increment people and continue looking.
-                p++;
-                continue;
-            } else {
-                // We have worked hours, but no more names to associate them to. Add them, but with a caveat.
-                const hours = timesheet.timesheet.map(e => e.hours).reduce((a: number, b: number) => a + b);
-                result.push(Ok({ fullName: `No Name Found for ${timesheet.id}`, totalHours: hours }));
-                t++;
-                continue;
-            }
-        } else if (person && timesheet) { // typeguarding necessary
-            const fullName = `${person?.first_name} ${person?.last_name}`;
-            const hours = timesheet.timesheet.map(e => e.hours).reduce((a: number, b: number) => a + b);
-
-            if (person.id < timesheet.id) {
-                // Again, no valid hours to report. Error.
-                result.push(Err(`No hours found for ${fullName} (${person.id}).`));
-                p++;
-            } else if (person.id > timesheet.id) {
-                // Again, no valid name to assign the time to. Report, but no error.
-                result.push(Ok({ fullName: `No Name Found for ${timesheet.id}`, totalHours: hours }));
-                t++;
-            } else { // if (person.id == timesheet.id)
-                // Finally valid data
-                result.push(Ok({ fullName: fullName, totalHours: hours }));
-                p++;
-                t++;
-            }
         }
     }
 
@@ -485,28 +476,29 @@ function generateWorklogBySorting(people: IPerson[], timesheets: ITimesheet[]): 
     return result;
 }
 
-function generateWorklogByMaps(people: IPerson[], timesheets: ITimesheet[]): Result<IEmployeeLog, String>[] {
+function generateWorklogsByMaps(people: IPerson[], timesheets: ITimesheet[]): Result<IWorklog, String>[] {
     // Shove 'em all in and let maps sort them out!
-    let worklogMap = new Map<string, IEmployeeLog>();
+    let worklogMap = new Map<string, IWorklog>();
     for (const person of people) {
-        worklogMap.set(person.id, { fullName: `${person.first_name} ${person.last_name}` })
+        const fullName = `${person.first_name} ${person.last_name}`;
+        const totalHours = worklogMap.get(person.id)?.totalHours; // save existing value so you don't overwrite with undefined
+        worklogMap.set(person.id, { fullName, totalHours: totalHours })
     }
     for (const timesheet of timesheets) {
+        const fullName = worklogMap.get(timesheet.id)?.fullName // save existing value so you don't overwrite with undefined
         const totalHours = timesheet.timesheet.map(e => e.hours).reduce((a: number, b: number) => a + b);
-        worklogMap.set(timesheet.id, { totalHours: totalHours })
+        worklogMap.set(timesheet.id, { fullName: fullName, totalHours: totalHours })
     }
 
     // lol watch maps solve the problem
     let result = [];
     for (const [id, worklog] of worklogMap) {
-        if (!worklog.fullName && !worklog.totalHours) {
-            result.push(Err(`No data found for ${id}.`))
-        } else if (worklog.fullName && !worklog.totalHours) {
-            result.push(Err(`No hours found for ${worklog.fullName} (${id}).`));
-        } else if (!worklog.fullName && worklog.totalHours) {
-            result.push(Ok({ fullName: `No Name Found for ${id}`, totalHours: worklog.totalHours }));
-        } else { // worklog.fullName && worklog.totalHours
-            result.push(Ok({ fullName: worklog.fullName, totalHours: worklog.totalHours }));
+        if (!worklog.totalHours) {
+            if (!worklog.fullName) result.push(Err(`No data found for ${id}.`));
+            if (worklog.fullName) result.push(Err(`No hours found for ${worklog.fullName} (${id}).`));
+        } else { // if( worklog.totalHours )
+            if (!worklog.fullName) result.push(Ok({ fullName: `Name Not Found (${id})`, totalHours: worklog.totalHours }));
+            if (worklog.fullName) result.push(Ok({ fullName: worklog.fullName, totalHours: worklog.totalHours }));
         }
     }
 
@@ -525,11 +517,12 @@ const shuffledPeople = shuffle(people);
 const shuffledTimesheets = shuffle(timesheets);
 
 // Now we can test performance!
-const mapStart = performance.now();
-{ generateWorklogByMaps(shuffledPeople, shuffledTimesheets); }
-const mapEnd = performance.now();
-console.log(`Mapping Time: ${mapEnd - mapStart} ms`);
 const sortStart = performance.now();
-{ generateWorklogBySorting(shuffledPeople, shuffledTimesheets); }
+{ generateWorklogsBySorting(shuffledPeople, shuffledTimesheets); }
 const sortEnd = performance.now();
 console.log(`Sorting Time: ${sortEnd - sortStart} ms`);
+
+const mapStart = performance.now();
+{ generateWorklogsByMaps(shuffledPeople, shuffledTimesheets); }
+const mapEnd = performance.now();
+console.log(`Mapping Time: ${mapEnd - mapStart} ms`);
