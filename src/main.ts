@@ -139,6 +139,7 @@ import { IAccount, accounts } from "./mockdata";
 // HOMEWORK HELP!
 
 // Using the []any workaround for parameters
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getCreditBad(accounts: any[], id: number): number {
     for (let i = 0; i < accounts.length; i++) {
         const account = accounts[i];
@@ -416,14 +417,14 @@ interface IWorklog {
     totalHours?: number;
 }
 
-function generateWorklogsBySorting(people: IPerson[], timesheets: ITimesheet[]): Result<IWorklog, String>[] {
+function generateWorklogsBySorting(people: IPerson[], timesheets: ITimesheet[]): Result<IWorklog, string>[] {
     // By sorting the arrays first, we can make sure we 
     // encounter all the matching IDs at the same time.
     people.sort((a: IPerson, b: IPerson) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
     timesheets.sort((a: ITimesheet, b: ITimesheet) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
 
     // Now we can loop through the arrays and throw them into our array
-    let result = [];
+    const result = [];
     for (let p = 0, t = 0; p < people.length || t < timesheets.length; /* manual incrementing */) {
         // We'll be using these a lot, so let's save them for later reference.
         const person = people[p];
@@ -479,9 +480,9 @@ function generateWorklogsBySorting(people: IPerson[], timesheets: ITimesheet[]):
     return result;
 }
 
-function generateWorklogsByMaps(people: IPerson[], timesheets: ITimesheet[]): Result<IWorklog, String>[] {
+function generateWorklogsByMaps(people: IPerson[], timesheets: ITimesheet[]): Result<IWorklog, string>[] {
     // Shove 'em all in and let maps sort them out!
-    let worklogMap = new Map<string, IWorklog>();
+    const worklogMap = new Map<string, IWorklog>();
     for (const person of people) {
         const fullName = `${person.first_name} ${person.last_name}`;
         const totalHours = worklogMap.get(person.id)?.totalHours; // save existing value so you don't overwrite with undefined
@@ -494,7 +495,7 @@ function generateWorklogsByMaps(people: IPerson[], timesheets: ITimesheet[]): Re
     }
 
     // lol watch maps solve the problem
-    let result = [];
+    const result = [];
     for (const [id, worklog] of worklogMap) {
         if (!worklog.totalHours) {
             if (!worklog.fullName) result.push(Err(`No data found for ${id}.`));
@@ -509,13 +510,11 @@ function generateWorklogsByMaps(people: IPerson[], timesheets: ITimesheet[]): Re
     return result;
 }
 
-// Shuffle helping function
-const shuffle = (array: any): any[] => {
+// Create some shuffled data to do proper testing 
+function shuffle<T>(array: T[]): T[] {
     array.sort(() => Math.random() - 0.5);
     return array;
 }
-
-// Create some shuffled data to do proper testing 
 const shuffledPeople = shuffle(people);
 const shuffledTimesheets = shuffle(timesheets);
 
