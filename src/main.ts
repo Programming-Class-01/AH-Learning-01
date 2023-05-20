@@ -528,3 +528,109 @@ const mapStart = performance.now();
 { generateWorklogsByMaps(shuffledPeople, shuffledTimesheets); }
 const mapEnd = performance.now();
 console.log(`Mapping Time: ${mapEnd - mapStart} ms`);
+
+// Create a function that takes in an array of objects containing IDs, names, ages, and the education type of
+// "High School", " College", "Vocational".  Sort applicants into lists based on being over or under 30 years old
+// and if they have a college diploma or not. Treat any other education types as an error.
+// Return the information as an object of four arrays.
+
+// Write another function that can print out any one of the arrays, but only non-error entries.
+
+enum Education {
+    HighSchool = "High School",
+    College = "College",
+    Vocational = "Vocational",
+}
+
+interface IApplicant {
+    id: string,
+    name: string,
+    age: number,
+    education: string,
+}
+
+interface IApplicantCensus {
+    YoungGrad: IApplicant[]
+    YoungNonDegree: IApplicant[]
+    OldGrad: IApplicant[]
+    OldNonDegree: IApplicant[]
+}
+
+function classifyApplicants(applicants: IApplicant[]): Result<IApplicantCensus, IApplicant[]> {
+    const results: IApplicantCensus = {
+        YoungGrad: [],
+        YoungNonDegree: [],
+        OldGrad: [],
+        OldNonDegree: []
+    }
+    const errors: IApplicant[] = []
+
+    const AGE_CUTOFF = 30;
+    for (const applicant of applicants) {
+        if (applicant.age < AGE_CUTOFF) {
+            if (applicant.education == Education.College) {
+                results.YoungGrad.push(applicant);
+            } else if (applicant.education == Education.HighSchool || applicant.education == Education.Vocational) {
+                results.YoungNonDegree.push(applicant);
+            } else {
+                errors.push(applicant);
+            }
+        } else { // applicant.age >= AGE_CUTOFF
+            if (applicant.education == Education.College) {
+                results.OldGrad.push(applicant);
+            } else if (applicant.education == Education.HighSchool || applicant.education == Education.Vocational) {
+                results.OldNonDegree.push(applicant);
+            } else {
+                errors.push(applicant);
+            }
+        }
+    }
+
+    if (errors.length > 0) {
+        return Err(errors)
+    }
+    return Ok(results);
+}
+
+enum Category {
+    YoungGrad,
+    YoungNonDegree,
+    OldGrad,
+    OldNonDegree,
+}
+function printApplicants(census: IApplicantCensus, category: Category): void {
+    switch (category) {
+        case Category.YoungGrad:
+            console.log(census.YoungGrad);
+            break;
+        case Category.YoungNonDegree:
+            console.log(census.YoungNonDegree);
+            break;
+        case Category.OldGrad:
+            console.log(census.OldGrad);
+            break;
+        case Category.OldNonDegree:
+            console.log(census.OldNonDegree);
+            break;
+        default:
+            console.log("Invalid Category");
+    }
+}
+
+// Wonderful applicant array courtesy of Tyler
+const applicants = [
+    { id: "A1", name: "John Moore", age: 28, education: "Vocational" },
+    { id: "A2", name: "Jon Smith", age: 32, education: "College" },
+    { id: "A3", name: "Emily Costatino", age: 30, education: "College" },
+    { id: "A4", name: "Justin Beasly", age: 32, education: "High School" },
+    { id: "A5", name: "Joel Hurd", age: 26, education: "College" },
+]
+
+// This is a really helpful pattern for checking errors on complex functions before using results
+const census = classifyApplicants(applicants);
+if (census.err) {
+    console.log("Invalid Applicants Detected:");
+    console.log(census.val);
+} else {
+    printApplicants(census.val, Category.OldGrad);
+}
