@@ -629,8 +629,82 @@ const applicants = [
 // This is a really helpful pattern for checking errors on complex functions before using results
 const census = classifyApplicants(applicants);
 if (census.err) {
-    console.log("Invalid Applicants Detected:");
+    console.log("Invalid Applicants Detected:")
     console.log(census.val);
 } else {
     printApplicants(census.val, Category.OldGrad);
 }
+
+// ---------- Phase 1 ---------- \\
+// Create an array of fruits objects and their weights (in oz)
+// It need not be perfectly factual
+
+// ---------- Phase 2 ---------- \\
+// Create a function that takes in an array representing your backpack,
+// a quantity, and a fruit object from the array in Phase 1 to add.
+// The function will attempt to add items to your backpack.
+// Your backpack has a maximum weight of 64 oz.
+// Return the updated backpack from the function.
+
+// ---------- Phase 3 ---------- \\
+// Call the function from Phase 2 adding a variety of of different fruits 
+// with different function calls, all of which add to the same backpack variable.
+
+// ---------- Phase 4 ---------- \\
+// Write another function that prints out all 
+// the contents of the backpack from Phase 1, with a header. 
+// List all items in the backpack including their weights, 
+// count and the name of the item, neatly. (No Bare Objects)
+
+// Phase 1
+import { fruits, IFruit } from "./fruits";
+
+// Phase 2
+const BACKPACK_DEFAULT_CAPACITY = 64;
+// Generics allow you to implement types that vary according to a parameter
+// This IBackpack can contain different types. Ours uses an IFruit.
+interface IBackpack<Type> {
+    weight : number,
+    capacity: number,
+    items: { item: Type, quantity: number }[],
+}
+
+function addFruit(backpack: IBackpack<IFruit>, fruit: IFruit, quantity: number): Result<IBackpack<IFruit>, string> {
+    // This should never happen
+    if (backpack.weight > backpack.capacity) { return new Err("Backpack Weight Exceeds Capacity") }
+    // This should prevent the problem above
+    if (backpack.weight + fruit.weight * quantity > backpack.capacity) {
+        return new Err(`Insufficient Capacity (${backpack.weight}/${backpack.capacity}) for ${quantity} ${fruit.name} (${fruit.weight} each)`)
+    }
+
+    backpack.weight += fruit.weight * quantity;
+    backpack.items.push({ item: fruit, quantity: quantity });
+    return Ok(backpack);
+}
+
+
+// Phase 3
+let fruitBackpack: IBackpack<IFruit> = { weight: 0, capacity: BACKPACK_DEFAULT_CAPACITY, items: [] };
+for (const fruit of shuffle(fruits)) { // Using generic shuffle() from earlier lesson
+    const result = addFruit(fruitBackpack, fruit, Math.floor(3 * Math.random() + 1));
+    if (result.err) {
+        console.log(result.val);
+    } else {
+        fruitBackpack = result.val;
+    }
+}
+
+// Phase 4
+function printBackpack(backpack: IBackpack<IFruit>): void {
+    console.log(`=====================================
+This backpack contains the following:
+=====================================`);
+    let weight = 0;
+    for (const content of backpack.items) {
+        console.log(`${content.quantity} ${content.item.name} (${content.item.weight * content.quantity} oz)`);
+        weight += content.item.weight * content.quantity;
+    }
+    console.log(`Total Weight: ${weight} / ${backpack.capacity} oz (${backpack.capacity - weight} oz remaining)`);
+}
+printBackpack(fruitBackpack);
+
