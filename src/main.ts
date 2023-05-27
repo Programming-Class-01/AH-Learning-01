@@ -664,27 +664,33 @@ const BACKPACK_DEFAULT_CAPACITY = 64;
 // Generics allow you to implement types that vary according to a parameter
 // This IBackpack can contain different types. Ours uses an IFruit.
 interface IBackpack<Type> {
-    weight : number,
+    weight: number,
     capacity: number,
-    items: { item: Type, quantity: number }[],
+    contents: { item: Type, quantity: number }[],
 }
 
 function addFruit(backpack: IBackpack<IFruit>, fruit: IFruit, quantity: number): Result<IBackpack<IFruit>, string> {
     // This should never happen
-    if (backpack.weight > backpack.capacity) { return new Err("Backpack Weight Exceeds Capacity") }
+    if (backpack.weight > backpack.capacity) return new Err("Backpack Weight Exceeds Capacity")
     // This should prevent the problem above
     if (backpack.weight + fruit.weight * quantity > backpack.capacity) {
         return new Err(`Insufficient Capacity (${backpack.weight}/${backpack.capacity}) for ${quantity} ${fruit.name} (${fruit.weight} each)`)
     }
 
+    // Check for existing items of that type before adding more to the array.
+    const content = backpack.contents.find((content) => content.item.name == fruit.name);
+    if (content) {
+        content.quantity += quantity;
+    } else {
+        backpack.contents.push({ item: fruit, quantity: quantity });
+    }
     backpack.weight += fruit.weight * quantity;
-    backpack.items.push({ item: fruit, quantity: quantity });
+
     return Ok(backpack);
 }
 
-
 // Phase 3
-let fruitBackpack: IBackpack<IFruit> = { weight: 0, capacity: BACKPACK_DEFAULT_CAPACITY, items: [] };
+let fruitBackpack: IBackpack<IFruit> = { weight: 0, capacity: BACKPACK_DEFAULT_CAPACITY, contents: [] };
 for (const fruit of shuffle(fruits)) { // Using generic shuffle() from earlier lesson
     const result = addFruit(fruitBackpack, fruit, Math.floor(3 * Math.random() + 1));
     if (result.err) {
@@ -699,12 +705,10 @@ function printBackpack(backpack: IBackpack<IFruit>): void {
     console.log(`=====================================
 This backpack contains the following:
 =====================================`);
-    let weight = 0;
-    for (const content of backpack.items) {
+    for (const content of backpack.contents) {
         console.log(`${content.quantity} ${content.item.name} (${content.item.weight * content.quantity} oz)`);
-        weight += content.item.weight * content.quantity;
     }
-    console.log(`Total Weight: ${weight} / ${backpack.capacity} oz (${backpack.capacity - weight} oz remaining)`);
+    console.log(`Total Weight: ${backpack.weight} / ${backpack.capacity} oz (${backpack.capacity - backpack.weight} oz remaining)`);
 }
 printBackpack(fruitBackpack);
 
