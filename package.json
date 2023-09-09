@@ -4,8 +4,12 @@
   "description": "Introduction to Typescript",
   "main": "main.js",
   "scripts": {
-    "start": "npx tsc && node build/main.js",
+    "start": "npx tsc && node build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Programming-Class-01/AH-Backend.git"
   },
   "author": "Amber (Corollax) Horky",
   "license": "LGPL-3.0-or-later",
