@@ -712,3 +712,4 @@ This backpack contains the following:
 }
 printBackpack(fruitBackpack);
 
+console.log("I sure hope that branch tutorial is going okay");
